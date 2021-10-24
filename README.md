@@ -5,5 +5,4 @@ Esta siendo desarrollado por el equipo "Training-Workshop" conformado por Daniel
 
 ##### Prerequisitos
 - Github
-- Maven
 - JAX-WS
