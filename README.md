@@ -6,3 +6,9 @@ Esta siendo desarrollado por el equipo "Training-Workshop" conformado por Daniel
 ##### Prerequisitos
 - Github
 - JAX-WS
+- JDK <= 8
+
+### Ejecución
+##### 1. Ejecutar como aplicación de java
+##### 2. Verificar http://localhost:8080/ws/afipchecker?wsdl
+##### 3. Utilizar la operación getStatus() ofrecida por la interfaz AfipServiceChecker
