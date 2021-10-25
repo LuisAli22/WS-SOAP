@@ -23,18 +23,24 @@ public class Afip{
 		service = Service.create(url, qname);
 		serviceOperation = service.getPort(qname2, PersonaServiceA5.class);
 	}
-	
-	private boolean serviceWorkingProperly(AfipXmlFieldsMapper afipXmlFieldsMapper) {
+	private boolean isStatusOk(String serverType) {
+		return serverType.equals(Definitions.OK_STATUS);
+	}
+	private boolean applicationDatabaseAndAuthenticationAreOk() {
+		AfipXmlFieldsMapper afipXmlFieldsMapper = serviceOperation.dummy();
 		String appServer= afipXmlFieldsMapper.getAppServer();
 		String dbServer= afipXmlFieldsMapper.getdBServer();
 		String authServer= afipXmlFieldsMapper.getAuthServer();
-		return appServer.equals(Definitions.OK_STATUS) &&
-				dbServer.equals(Definitions.OK_STATUS) &&
-				authServer.equals(Definitions.OK_STATUS);
+		return (isStatusOk(appServer) &&
+				isStatusOk(dbServer)&&
+				isStatusOk(authServer));
 	}
-	public boolean getStatus(){
-		AfipXmlFieldsMapper afipXmlFieldsMapper = serviceOperation.dummy();
-		return serviceWorkingProperly(afipXmlFieldsMapper);
+	public String getStatus(){
+		String currentServiceStatus= Definitions.FAILED_STATUS;
+		if (this.applicationDatabaseAndAuthenticationAreOk()){
+			currentServiceStatus= Definitions.OK_STATUS;
+		}
+		return currentServiceStatus; 
 	}
 
 }

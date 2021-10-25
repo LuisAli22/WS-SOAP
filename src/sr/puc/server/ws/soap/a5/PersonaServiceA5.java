@@ -14,10 +14,7 @@ import ar.com.learsoft.soap.ws.afipclient.AfipXmlFieldsMapper;
 @WebService
 @SOAPBinding(style = Style.DOCUMENT, use=Use.LITERAL)
 public interface PersonaServiceA5{
- 
 	@WebMethod 
 	public AfipXmlFieldsMapper dummy();
-	
-	
 
 }
