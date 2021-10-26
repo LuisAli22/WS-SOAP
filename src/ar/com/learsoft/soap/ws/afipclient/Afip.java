@@ -16,25 +16,48 @@ public class Afip{
 	private Service service;
 	private PersonaServiceA5 serviceOperation;
 	
-	public Afip() throws MalformedURLException {
-		url = new URL("https://awshomo.afip.gov.ar/sr-padron/webservices/personaServiceA5?WSDL");
-		qname = new QName("http://a5.soap.ws.server.puc.sr/", "PersonaServiceA5");
-		qname2 = new QName("http://a5.soap.ws.server.puc.sr/", "PersonaServiceA5Port");
-		service = Service.create(url, qname);
-		serviceOperation = service.getPort(qname2, PersonaServiceA5.class);
+	/* PRE: Ninuguna
+	 * POS: Se obtiene un proxy (serviceOperation) para interactuar con el 
+	 * servicio de afip
+	 * */
+	public Afip(){
+		try {
+			url = new URL("https://awshomo.afip.gov.ar/sr-padron/webservices/personaServiceA5?WSDL");
+			qname = new QName("http://a5.soap.ws.server.puc.sr/", "PersonaServiceA5");
+			qname2 = new QName("http://a5.soap.ws.server.puc.sr/", "PersonaServiceA5Port");
+			service = Service.create(url, qname);
+			serviceOperation = service.getPort(qname2, PersonaServiceA5.class);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
 	}
+	
+	/* PRE. Recibe una cadena (serverStatus) con el valor devuelto por el proxy
+	 * que comunica con el servivio de afip.
+	 * POS: Devuelve True si el estado es OK sino False.
+	 * */
 	private boolean isStatusOk(String serverType) {
 		return serverType.equals(Definitions.OK_STATUS);
 	}
+	/* PRE: Ninguna
+	 * POS: Devuelve True si el estado de los tres servicios (appServer, 
+	 * authServer y dbServer) es OK, sino False.
+	 * */
 	private boolean applicationDatabaseAndAuthenticationAreOk() {
 		AfipXmlFieldsMapper afipXmlFieldsMapper = serviceOperation.dummy();
-		String appServer= afipXmlFieldsMapper.getAppServer();
-		String dbServer= afipXmlFieldsMapper.getdBServer();
-		String authServer= afipXmlFieldsMapper.getAuthServer();
-		return (isStatusOk(appServer) &&
-				isStatusOk(dbServer)&&
-				isStatusOk(authServer));
+		String appServerStatus= afipXmlFieldsMapper.getAppServerStatus();
+		String dbServerStatus= afipXmlFieldsMapper.getdBServerStatus();
+		String authServerStatus= afipXmlFieldsMapper.getAuthServerStatus();
+		return (isStatusOk(appServerStatus) &&
+				isStatusOk(dbServerStatus)&&
+				isStatusOk(authServerStatus));
 	}
+	
+	/* PRE: Ninguna
+	 * POS: Devuelve OK  si los tres servicios (appServer, 
+	 * authServer y dbServer) estan funcionando, sino ERROR (como cadena).
+	 * */
 	public String getStatus(){
 		String currentServiceStatus= Definitions.FAILED_STATUS;
 		if (this.applicationDatabaseAndAuthenticationAreOk()){

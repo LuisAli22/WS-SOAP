@@ -17,16 +17,27 @@ public class AfipXmlFieldsMapper {
 	@XmlElement(name = "dbserver")
 	protected String dBServer;
 	
-	
-	public String getAppServer() {
+	/* PRE: Ninguna
+	 * POS: Devuelve el valor del atributo appServer obtenido como
+	 * respuesta del servicio de afip
+	 * */
+	public String getAppServerStatus() {
 		return appServer;
 	}
 	
-	public String getAuthServer() {
+	/* PRE: Ninguna
+	 * POS: Devuelve el valor del atributo authServer obtenido como
+	 * respuesta del servicio de afip
+	 * */
+	public String getAuthServerStatus() {
 		return authServer;
 	}
 	
-	public String getdBServer() {
+	/* PRE: Ninguna
+	 * POS: Devuelve el valor del atributo dbServer obtenido como
+	 * respuesta del servicio de afip
+	 * */
+	public String getdBServerStatus() {
 		return dBServer;
 	}
 	

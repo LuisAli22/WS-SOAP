@@ -9,18 +9,22 @@ import ar.com.learsoft.soap.ws.utils.Definitions;
 
 @WebService(endpointInterface = "ar.com.learsoft.soap.ws.ServiceChecker")
 public class AfipServiceChecker implements ServiceChecker{
-
+	private Afip afip;
+	/* PRE: Ninugna
+	 * POS: Crea una instancia de Afip para comunicarse con 
+	 * el servicio correspondiente y realizar consultas 
+	 * (Afip tiene el rol de cliente en este caso)
+	 * */
+	public AfipServiceChecker() {
+		afip = new Afip();
+	}
+	/* PRE: Ninguna
+	 * POS: Devuelve el estado del servicio de afip, pudiendo
+	 * el mismo ser OK o ERROR.
+	 * */
 	@Override
 	public String getStatus(){
-		String serviceStatus= Definitions.FAILED_STATUS;
-		try {
-			Afip afip = new Afip();
-			serviceStatus= afip.getStatus();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return serviceStatus;
+		return afip.getStatus();
 	}
 
 }
