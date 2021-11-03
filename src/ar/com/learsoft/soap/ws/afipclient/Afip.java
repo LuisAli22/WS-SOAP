@@ -45,10 +45,10 @@ public class Afip{
 	 * authServer y dbServer) es OK, sino False.
 	 * */
 	private boolean applicationDatabaseAndAuthenticationAreOk() {
-		AfipXmlFieldsMapper afipXmlFieldsMapper = serviceOperation.dummy();
-		String appServerStatus= afipXmlFieldsMapper.getAppServerStatus();
-		String dbServerStatus= afipXmlFieldsMapper.getdBServerStatus();
-		String authServerStatus= afipXmlFieldsMapper.getAuthServerStatus();
+		DummyReturn afipXmlFieldsMapper = serviceOperation.dummy();
+		String appServerStatus= afipXmlFieldsMapper.appserver;
+		String dbServerStatus= afipXmlFieldsMapper.authserver;
+		String authServerStatus= afipXmlFieldsMapper.dbserver;
 		return (isStatusOk(appServerStatus) &&
 				isStatusOk(dbServerStatus)&&
 				isStatusOk(authServerStatus));

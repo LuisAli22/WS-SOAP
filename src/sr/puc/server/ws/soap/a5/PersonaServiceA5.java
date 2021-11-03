@@ -6,7 +6,7 @@ import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
 
-import ar.com.learsoft.soap.ws.afipclient.AfipXmlFieldsMapper;
+import ar.com.learsoft.soap.ws.afipclient.DummyReturn;
 
 
  
@@ -15,6 +15,6 @@ import ar.com.learsoft.soap.ws.afipclient.AfipXmlFieldsMapper;
 @SOAPBinding(style = Style.DOCUMENT, use=Use.LITERAL)
 public interface PersonaServiceA5{
 	@WebMethod 
-	public AfipXmlFieldsMapper dummy();
+	public DummyReturn dummy();
 
 }
