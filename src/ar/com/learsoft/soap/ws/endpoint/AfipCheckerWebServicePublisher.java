@@ -1,4 +1,5 @@
 package ar.com.learsoft.soap.ws.endpoint;
+
 import javax.xml.ws.Endpoint;
 import ar.com.learsoft.soap.ws.AfipServiceChecker;
 import ar.com.learsoft.soap.ws.utils.Definitions;
