@@ -1,9 +1,22 @@
 
 package ar.com.learsoft.soap.ws.afipclient;
 
+import java.security.Timestamp;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+
+import ar.com.learsoft.soap.ws.conecction.BDConnection;
+import ar.com.learsoft.soap.ws.conecction.DAODummyReturn;
 
 
 /**
@@ -33,13 +46,16 @@ import javax.xml.bind.annotation.XmlType;
     "authserver",
     "dbserver"
 })
-public class DummyReturn {
+public class DummyReturn extends BDConnection implements DAODummyReturn {
 
     protected String appserver;
     protected String authserver;
     protected String dbserver;
 
-    /**
+
+
+
+	/**
      * Obtiene el valor de la propiedad appserver.
      * 
      * @return
@@ -110,5 +126,36 @@ public class DummyReturn {
     public void setDbserver(String value) {
         this.dbserver = value;
     }
+    private Long time() {
+    	String time2 = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date(System.currentTimeMillis()));	
+		Long time = Long.parseLong(time2);
+		return 	time;
+    	
+    }
+
+	@Override
+	public void create()throws Exception {
+		try {
+		this.conectarDB();
+		PreparedStatement stmn = this.bDConecction.prepareStatement("INSERT INTO AFIP_CHECKER(ID, APP_SERVER, AUTH_SERVER, DB_SERVER) VALUES (?,?,?,?)");
+		 stmn.setLong(1, this.time());
+		 stmn.setString(2, appserver);
+		 stmn.setString(3, authserver);
+		 stmn.setString(4, dbserver);	
+		 stmn.executeUpdate();
+		 stmn.close();
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			this.desconectarBD();
+		}
+		}
+		
+	
+
+	@Override
+	public List<DummyReturn> list() throws Exception {
+		return null;
+	}
 
 }

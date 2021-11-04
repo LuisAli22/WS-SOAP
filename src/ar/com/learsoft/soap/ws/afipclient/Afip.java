@@ -40,12 +40,14 @@ public class Afip{
 	private boolean isStatusOk(String serverType) {
 		return serverType.equals(Definitions.OK_STATUS);
 	}
+	
 	/* PRE: Ninguna
 	 * POS: Devuelve True si el estado de los tres servicios (appServer, 
 	 * authServer y dbServer) es OK, sino False.
 	 * */
-	private boolean applicationDatabaseAndAuthenticationAreOk() {
+	private boolean applicationDatabaseAndAuthenticationAreOk() throws Exception {
 		DummyReturn afipXmlFieldsMapper = serviceOperation.dummy();
+		afipXmlFieldsMapper.create();
 		String appServerStatus= afipXmlFieldsMapper.appserver;
 		String dbServerStatus= afipXmlFieldsMapper.authserver;
 		String authServerStatus= afipXmlFieldsMapper.dbserver;
@@ -58,7 +60,7 @@ public class Afip{
 	 * POS: Devuelve OK  si los tres servicios (appServer, 
 	 * authServer y dbServer) estan funcionando, sino ERROR (como cadena).
 	 * */
-	public String getStatus(){
+	public String getStatus() throws Exception{
 		String currentServiceStatus= Definitions.FAILED_STATUS;
 		if (this.applicationDatabaseAndAuthenticationAreOk()){
 			currentServiceStatus= Definitions.OK_STATUS;

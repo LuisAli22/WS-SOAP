@@ -1,11 +1,8 @@
 package ar.com.learsoft.soap.ws;
 
-import java.net.MalformedURLException;
-
 import javax.jws.WebService;
 
 import ar.com.learsoft.soap.ws.afipclient.Afip;
-import ar.com.learsoft.soap.ws.utils.Definitions;
 
 @WebService(endpointInterface = "ar.com.learsoft.soap.ws.ServiceChecker")
 public class AfipServiceChecker implements ServiceChecker{
@@ -23,8 +20,14 @@ public class AfipServiceChecker implements ServiceChecker{
 	 * el mismo ser OK o ERROR.
 	 * */
 	@Override
-	public String getStatus(){
-		return afip.getStatus();
+	public String getStatus() {
+		try {
+			return afip.getStatus();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
