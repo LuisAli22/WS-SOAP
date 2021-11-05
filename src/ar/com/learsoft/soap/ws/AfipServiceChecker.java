@@ -26,7 +26,6 @@ public class AfipServiceChecker implements ServiceChecker {
 		try {
 			return afip.getStatus();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

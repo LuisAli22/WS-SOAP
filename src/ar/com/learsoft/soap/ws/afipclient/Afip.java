@@ -5,6 +5,8 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
+import ar.com.learsoft.soap.ws.conecction.DAODummyReturn;
+import ar.com.learsoft.soap.ws.conecction.DummyReturnDAO;
 import ar.com.learsoft.soap.ws.utils.Definitions;
 import sr.puc.server.ws.soap.a5.PersonaServiceA5;
 
@@ -42,12 +44,25 @@ public class Afip {
 	}
 
 	/*
+	 * Crea una instancia (DummyReturnDAO) para comunicarse con la base de datos y
+	 * guarda los datos del estado del servicio en la misma.
+	 */
+	private void saveInDateBase(DummyReturn dummy) {
+		DAODummyReturn dAODummy = new DummyReturnDAO();
+		try {
+			dAODummy.saveDB(dummy);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
 	 * PRE: Ninguna POS: Devuelve True si el estado de los tres servicios
 	 * (appServer, authServer y dbServer) es OK, sino False.
 	 */
 	private boolean applicationDatabaseAndAuthenticationAreOk() throws Exception {
 		DummyReturn afipXmlFieldsMapper = serviceOperation.dummy();
-		afipXmlFieldsMapper.saveDB();
+		this.saveInDateBase(afipXmlFieldsMapper);
 		String appServerStatus = afipXmlFieldsMapper.appserver;
 		String dbServerStatus = afipXmlFieldsMapper.authserver;
 		String authServerStatus = afipXmlFieldsMapper.dbserver;
