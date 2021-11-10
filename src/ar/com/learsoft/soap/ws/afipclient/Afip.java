@@ -6,7 +6,7 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 import ar.com.learsoft.soap.ws.conecction.DAODummyReturn;
-import ar.com.learsoft.soap.ws.conecction.DummyReturnDAO;
+import ar.com.learsoft.soap.ws.conecction.DummyReturnImpl;
 import ar.com.learsoft.soap.ws.utils.Definitions;
 import sr.puc.server.ws.soap.a5.PersonaServiceA5;
 
@@ -48,7 +48,7 @@ public class Afip {
 	 * guarda los datos del estado del servicio en la misma.
 	 */
 	private void saveInDateBase(DummyReturn dummy) {
-		DAODummyReturn dAODummy = new DummyReturnDAO();
+		DAODummyReturn dAODummy = new DummyReturnImpl();
 		try {
 			dAODummy.saveDB(dummy);
 		} catch (Exception e) {
