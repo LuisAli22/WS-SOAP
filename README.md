@@ -1,13 +1,37 @@
 # WS-SOAP
-WS-SOAP Es una aplicacion que tiene como finalidad funcionar como una API-SOAP que consume un servicio de la AFIP para luego convertirse en un servicio SOAP,
-que seria consumida por una API-REST.   
-Esta siendo desarrollado por el equipo "Training-Workshop" conformado por Daniel, luis y Matias, siendo estos supervisados por Horacio Perez.
+WS-SOAP es un servicio web (soap) que permite obtener el estado de funcionamiento del servicio AFIP.
 
 ##### Prerequisitos
-- JAX-WS
-- JDK <= 8
+- Tomcat 9
+- JDK 1.8
+- Lombok 1.18.22
 
-### EjecuciÃ³n
-##### 1. Ejecutar como aplicaciÃ³n de java
-##### 2. Verificar http://localhost:8080/ws/afipchecker?wsdl
-##### 3. Utilizar la operaciÃ³n getStatus() ofrecida por la interfaz AfipServiceChecker
+### Ejecución
+#### 1) Configurar path de instalación de Tomcat
+##### 1.1) Click con el botón derecho sobre el proyecto/ properties
+```bash
+	Project facets- seleccionar pestaña runtime/ new
+	Seleccionar Apache tomcatv9.0/ next
+	Seleccionar el path de instalación local de tomcat
+	Seleccionar la jre por defecto en el workspace/ finish
+	CLick en apply and close
+```
+
+#### 2) Crear servidor en eclispe 
+##### 2.1) Mostrar consola de servidor en eclipse jee, seleccionar:
+```bash
+	window/show view/servers
+```
+##### 2.2) Click derecho en la parte vacía de la consola del servidor
+```bash
+	new/server/tomcat server 9
+	Elegir Server runtime environment al runtime creado en el paso 1.1. Click en next.
+	Add WS-SOAP/finish
+```
+##### 2.3) Doble click con botón izquierdo sobre el servidor recién creado (consola)
+```bash
+	Poner el valor tomcat admin port 9000 y HTTP/1.1 en el puerto 8080. 
+	Guardar la configuracón con CTRL+s (o archivo/guardar)
+```
+##### 3) Ejecutar el servidor desde la consola (click en start)
+##### 4) Verificar datos del servicio en http://localhost:8080/WS-SOAP/ws/afipchecker
