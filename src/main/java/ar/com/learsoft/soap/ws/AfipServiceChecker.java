@@ -4,7 +4,7 @@ import javax.jws.WebService;
 
 import ar.com.learsoft.soap.ws.afipclient.Afip;
 
-@WebService(endpointInterface = "ar.com.learsoft.soap.ws.ServiceChecker")
+@WebService
 public class AfipServiceChecker implements ServiceChecker {
 	private Afip afip;
 
