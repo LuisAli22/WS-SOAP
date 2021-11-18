@@ -19,7 +19,8 @@ WS-SOAP Es un servicio web (soap) que permite obtener el estado de funcionamient
 ```
 ##### 1.2) Doble click con botón izquiero sobre el servidor recién creado (consola)
 ```bash
-	Poner el valor tomcat admin port 9000 y HTTP/1.1 el número de puerto que desee (De ahora en adelante APP_PORT)
+	Poner el valor tomcat admin port 9000 y HTTP/1.1 el número de puerto que desee. 
+	(De ahora en adelante APP_PORT).
 	Guardar la configuracón con CTRL+s (o archivo/guardar)
 ```
 ##### 2) Ejecutar el servidor desde la consola (click en start)
