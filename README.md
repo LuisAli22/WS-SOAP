@@ -23,4 +23,4 @@ WS-SOAP Es un servicio web (soap) que permite obtener el estado de funcionamient
 	Guardar la configuracón con CTRL+s (o archivo/guardar)
 ```
 ##### 2) Ejecutar el servidor desde la consola (click en start)
-##### 3) Verificar datos del servicio en localhost:APP_PORT/WS-SOAP/ws/afipchecker
+##### 3) Verificar datos del servicio en http://localhost:APP_PORT/WS-SOAP/ws/afipchecker
