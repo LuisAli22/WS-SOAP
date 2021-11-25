@@ -5,8 +5,8 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import ar.com.learsoft.soap.ws.conecction.DAODummyReturn;
-import ar.com.learsoft.soap.ws.conecction.DummyReturnImpl;
+import ar.com.learsoft.soap.ws.conecction.DummyReturnDao;
+import ar.com.learsoft.soap.ws.conecction.DummyReturnDaoImpl;
 import ar.com.learsoft.soap.ws.utils.Definitions;
 import sr.puc.server.ws.soap.a5.PersonaServiceA5;
 
@@ -16,6 +16,7 @@ public class Afip {
 	private QName qname2;
 	private Service service;
 	private PersonaServiceA5 serviceOperation;
+	DummyReturnDao dummyReturnDao;
 
 	/*
 	 * PRE: Ninuguna POS: Se obtiene un proxy (serviceOperation) para interactuar
@@ -28,6 +29,7 @@ public class Afip {
 			qname2 = new QName("http://a5.soap.ws.server.puc.sr/", "PersonaServiceA5Port");
 			service = Service.create(url, qname);
 			serviceOperation = service.getPort(qname2, PersonaServiceA5.class);
+			dummyReturnDao= new DummyReturnDaoImpl();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -47,13 +49,8 @@ public class Afip {
 	 * Crea una instancia (DummyReturnDAO) para comunicarse con la base de datos y
 	 * guarda los datos del estado del servicio en la misma.
 	 */
-	private void saveInDateBase(DummyReturn dummy) {
-		DAODummyReturn dAODummy = new DummyReturnImpl();
-		try {
-			dAODummy.saveDB(dummy);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	private void saveInDateBase(DummyReturn dummyReturn) {
+		dummyReturnDao.save(dummyReturn);
 	}
 
 	/*
