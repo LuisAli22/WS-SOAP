@@ -1,4 +1,4 @@
-package ar.com.learsoft.soap.ws.conecction;
+package ar.com.learsoft.soap.ws.persistence;
 
 import ar.com.learsoft.soap.ws.afipclient.DummyReturn;
 

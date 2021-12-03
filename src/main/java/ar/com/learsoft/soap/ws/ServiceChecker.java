@@ -11,5 +11,5 @@ import javax.jws.soap.SOAPBinding.Use;
 @SOAPBinding(style = Style.DOCUMENT, use = Use.LITERAL)
 public interface ServiceChecker {
 	@WebMethod
-	public String getStatus();
+	public String getStatus() throws Exception;
 }
