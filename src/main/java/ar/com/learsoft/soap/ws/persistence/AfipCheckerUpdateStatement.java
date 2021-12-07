@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import com.google.common.collect.ImmutableMap;
 
 import ar.com.learsoft.soap.ws.afipclient.DummyReturn;
+import ar.com.learsoft.soap.ws.core.domain.model.Log;
 import ar.com.learsoft.soap.ws.utils.Definitions.AfipChecker;
 import static ar.com.learsoft.soap.ws.utils.Definitions.AfipChecker.*;
 
@@ -17,22 +18,24 @@ import ar.com.learsoft.soap.ws.utils.Definitions.DatabaseType;
 import static ar.com.learsoft.soap.ws.utils.Definitions.*;
 
 public class AfipCheckerUpdateStatement extends Statement{
-	private Map<AfipChecker, String> afipResponseValues;
+	private Map<AfipChecker, ?> afipResponseValues;
 	TreeMap<DatabaseType, Collection<AfipChecker>> afipCheckerTable;
 	private int fieldIndex;
 	private String valuesFlags;
-	public AfipCheckerUpdateStatement(DummyReturn dummyReturn) {
+	public AfipCheckerUpdateStatement(Log log) {
 		super(INSERT_STATEMENT+SPACE+TABLENAME.toString()
 			+SPACE+OPEN_PARENTHESIS);
 		this.valuesFlags=VALUES_STATEMENT+SPACE+OPEN_PARENTHESIS;
 		this.afipResponseValues= 
 				ImmutableMap.of(
+						IDENTIFIER_FIELD,
+						log.getTimestamp(),
 						APPLICATION_SERVER_FIELD, 
-						dummyReturn.getAppserver(),
+						log.getAppserver(),
 						AUTHENTICATION_SERVER_FIELD,
-						dummyReturn.getAuthserver(),
+						log.getAuthserver(),
 						DATABASE_SERVER_FIELD,
-						dummyReturn.getDbserver());
+						log.getDbserver());
 		this.fieldIndex=INITIAL_INDEX;
 		afipCheckerTable= new TreeMap<>(AFIP_CHECKER_TABLE.asMap());
 	}
@@ -56,10 +59,6 @@ public class AfipCheckerUpdateStatement extends Statement{
 	public void execute() throws SQLException {
 		preparedStatement.executeUpdate();
 	}
-	private Long getCurrentInstant() {
-		Instant instant = Instant.now();
-		return instant.toEpochMilli();
-	}
 	
 	private void setFieldValues(DatabaseType currentDataType, 
 								List<AfipChecker> fields) throws SQLException {
@@ -68,19 +67,20 @@ public class AfipCheckerUpdateStatement extends Statement{
 			setCurrentField(currentDataType, currentField);
 		}	
 	}
-	private void setIdentifierToPreparedStatement() throws SQLException {
-		long fieldValue= this.getCurrentInstant();
+	private void setIdentifierToPreparedStatement(
+								AfipChecker currentField) throws SQLException {
+		long fieldValue= (long) this.afipResponseValues.get(currentField);
 		preparedStatement.setLong(this.fieldIndex, fieldValue);	
 	}
 	private void setAfipResponseValueToPreparedStatement(
 								AfipChecker currentField) throws SQLException {
-		String fieldValue=this.afipResponseValues.get(currentField);
+		String fieldValue=(String) this.afipResponseValues.get(currentField);
 		preparedStatement.setString(this.fieldIndex, fieldValue);
 	}
 	private void setCurrentField(DatabaseType currentDataType, 
 								AfipChecker currentField) throws SQLException {
 		if (currentDataType== DatabaseType.BIGINTNOTNULL) {
-			this.setIdentifierToPreparedStatement();
+			this.setIdentifierToPreparedStatement(currentField);
 		}else {
 			this.setAfipResponseValueToPreparedStatement(currentField);
 		}

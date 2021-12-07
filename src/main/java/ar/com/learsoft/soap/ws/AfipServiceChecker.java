@@ -8,78 +8,67 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 import ar.com.learsoft.soap.ws.afipclient.DummyReturn;
-import ar.com.learsoft.soap.ws.persistence.DummyReturnDao;
-import ar.com.learsoft.soap.ws.persistence.DummyReturnDaoImpl;
-import ar.com.learsoft.soap.ws.utils.Definitions;
-import sr.puc.server.ws.soap.a5.PersonaServiceA5;
+import ar.com.learsoft.soap.ws.core.domain.model.DummyLog;
+import ar.com.learsoft.soap.ws.core.domain.model.Log;
+import ar.com.learsoft.soap.ws.persistence.LogDao;
+import ar.com.learsoft.soap.ws.persistence.LogDaoImpl;
+import sr.puc.server.ws.soap.a5.PersonaServiceA5Endpoint;
+import static ar.com.learsoft.soap.ws.utils.Definitions.*;
 
 @WebService
 public class AfipServiceChecker implements ServiceChecker {
-	private URL url;
-	private QName qname;
-	private QName qname2;
-	private Service service;
-	private PersonaServiceA5 personaServiceA5AfipProxy;
-	DummyReturnDao dummyReturnDao;
+	private URL wsdlDocumentLocationUrl;
+	private QName personaServiceA5QualifiedName;
+	private QName personaServiceA5EndpointQualifiedName;
+	private Service afipWebServerClientView;
+	private PersonaServiceA5Endpoint personaServiceA5Endpoint;
+	private LogDao logDao;
 
-	/*
-	 * PRE: Ninugna POS: Crea una instancia de Afip para comunicarse con el servicio
-	 * correspondiente y realizar consultas (Afip tiene el rol de cliente en este
-	 * caso)
-	 */
 	public AfipServiceChecker() {
 		try {
-			url = new URL("https://awshomo.afip.gov.ar/sr-padron/webservices/personaServiceA5?WSDL");
-			qname = new QName("http://a5.soap.ws.server.puc.sr/", "PersonaServiceA5");
-			qname2 = new QName("http://a5.soap.ws.server.puc.sr/", "PersonaServiceA5Port");
-			service = Service.create(url, qname);
-			personaServiceA5AfipProxy = service.getPort(qname2, PersonaServiceA5.class);
-			dummyReturnDao= new DummyReturnDaoImpl();
+			this.setWebServerClientView();
+			this.setPersonaA5Endpoint();
+			logDao= new LogDaoImpl();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 	}
-	/*
-	 * PRE. Recibe una cadena (serverStatus) con el valor devuelto por el proxy que
-	 * comunica con el servivio de afip. POS: Devuelve True si el estado es OK sino
-	 * False.
-	 */
-	private boolean isStatusOk(String serverType) {
-		return serverType.equals(Definitions.OK_STATUS);
+	private void setWebServerClientView() throws MalformedURLException {
+			wsdlDocumentLocationUrl = new URL(PADRONAFIPPERSONA5WSDLURL);
+			personaServiceA5QualifiedName = new QName(
+											PERSONAA5TARGETNAMESPACEURI,
+											PERSONAA5TARGETNAMESPACEELEMENT);
+			afipWebServerClientView = Service.create(
+											wsdlDocumentLocationUrl, 
+											personaServiceA5QualifiedName);
+	}
+	private void setPersonaA5Endpoint() {
+		personaServiceA5EndpointQualifiedName = new QName(
+										PERSONAA5TARGETNAMESPACEURI, 
+										PERSONAA5PORTTARGETNAMESPACEELEMENT);
+		personaServiceA5Endpoint = afipWebServerClientView.getPort(
+										personaServiceA5EndpointQualifiedName, 
+										PersonaServiceA5Endpoint.class);
 	}
 
-	/*
-	 * Crea una instancia (DummyReturnDAO) para comunicarse con la base de datos y
-	 * guarda los datos del estado del servicio en la misma.
-	 */
-	private void saveInDateBase(DummyReturn dummyReturn) {
-		dummyReturnDao.save(dummyReturn);
-	}
-	/*
-	 * PRE: Ninguna POS: Devuelve True si el estado de los tres servicios
-	 * (appServer, authServer y dbServer) es OK, sino False.
-	 */
-	private boolean applicationDatabaseAndAuthenticationAreOk() throws Exception {
-		DummyReturn dummyReturn = personaServiceA5AfipProxy.dummy();
-		this.saveInDateBase(dummyReturn);
-		String appServerStatus = dummyReturn.getAppserver();
-		String dbServerStatus = dummyReturn.getAuthserver();
-		String authServerStatus = dummyReturn.getDbserver();
-		return (isStatusOk(appServerStatus) && isStatusOk(dbServerStatus) && isStatusOk(authServerStatus));
+	private String getThreeServersStatusResponse(Log log) {
+		boolean appServerOk = (OK_STATUS.equals(log.getAppserver()));
+		boolean dbServerOk = (OK_STATUS.equals(log.getAuthserver()));
+		boolean authServerOk = (OK_STATUS.equals(log.getDbserver()));
+		boolean threeServersOk = (appServerOk)
+									&&(dbServerOk)
+									&&(authServerOk);
+		return (threeServersOk)?(OK_STATUS):(FAILED_STATUS);
 	}
 
-
-	/*
-	 * PRE: Ninguna POS: Devuelve OK si los tres servicios (appServer, authServer y
-	 * dbServer) estan funcionando, sino ERROR (como cadena).
-	 */
 	@Override
-	public String getStatus() throws Exception {
-		String currentServiceStatus = Definitions.FAILED_STATUS;
-		if (this.applicationDatabaseAndAuthenticationAreOk()) {
-			currentServiceStatus = Definitions.OK_STATUS;
-		}
-		return currentServiceStatus;
+	public String getStatus() {
+		DummyReturn dummyReturn = personaServiceA5Endpoint.dummy();
+		DummyLog dummyLog=new DummyLog(dummyReturn);
+		logDao.save(dummyLog);
+		String threeServersStatusResponse = 
+				getThreeServersStatusResponse(dummyLog); 
+		return threeServersStatusResponse;
 	}
 
 }

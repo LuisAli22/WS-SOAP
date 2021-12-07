@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+import ar.com.learsoft.soap.ws.core.domain.model.Dummy;
+
 /**
  * <p>
  * Clase Java para dummyReturn complex type.
@@ -30,7 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dummyReturn", propOrder = { "appserver", "authserver", "dbserver" })
-public class DummyReturn {
+public class DummyReturn implements Dummy{
 
 	protected String appserver;
 	protected String authserver;
