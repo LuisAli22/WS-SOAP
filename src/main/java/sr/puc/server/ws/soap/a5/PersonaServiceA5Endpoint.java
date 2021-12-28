@@ -8,12 +8,9 @@ import javax.jws.soap.SOAPBinding.Use;
 
 import ar.com.learsoft.soap.ws.afipclient.DummyReturn;
 
-
- 
-//Service Endpoint Interface
 @WebService
 @SOAPBinding(style = Style.DOCUMENT, use=Use.LITERAL)
-public interface PersonaServiceA5{
+public interface PersonaServiceA5Endpoint{
 	@WebMethod 
 	public DummyReturn dummy();
 

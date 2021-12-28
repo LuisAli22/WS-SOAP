@@ -4,7 +4,6 @@ WS-SOAP es un servicio web (soap) que permite obtener el estado de funcionamient
 ##### Prerequisitos
 - [Tomcat 9](https://tomcat.apache.org/download-90.cgi)
 - [Java 8 (jdk1.8.0_301)](https://www.oracle.com/ar/java/technologies/javase/javase8u211-later-archive-downloads.html)
-- [Lombok 1.18.22](https://projectlombok.org/download)
 
 ### Crear proyecto en eclipse
 

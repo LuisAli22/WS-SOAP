@@ -1,13 +1,16 @@
 package ar.com.learsoft.soap.ws.utils;
 
-import com.google.common.collect.ArrayListMultimap;
+
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ListMultimap;
 
 public class Definitions {
 	public static final String OK_STATUS = "OK";
 	public static final String FAILED_STATUS = "ERROR";
-	public static final String AFIP_CHECKER_ADDRESS= "http://localhost:8080/ws/afipchecker";
+	public static final String PADRONAFIPPERSONA5WSDLURL="https://awshomo.afip.gov.ar/sr-padron/webservices/personaServiceA5?WSDL";
+	public static final String PERSONAA5TARGETNAMESPACEURI="http://a5.soap.ws.server.puc.sr/";
+	public static final String PERSONAA5TARGETNAMESPACEELEMENT="PersonaServiceA5";
+	public static final String PERSONAA5PORTTARGETNAMESPACEELEMENT="PersonaServiceA5Port";
 	public static final String PRIMARYKEYLABEL="PRIMARY KEY";
 	public enum AfipChecker {
 		TABLENAME("AFIP_CHECKER"),

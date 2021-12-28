@@ -1,19 +1,19 @@
 package ar.com.learsoft.soap.ws.persistence;
 
-import ar.com.learsoft.soap.ws.afipclient.DummyReturn;
+import ar.com.learsoft.soap.ws.core.domain.model.Log;
 
-public class DummyReturnDaoImpl implements DummyReturnDao {
+public class LogDaoImpl implements LogDao {
 
-	public DummyReturnDaoImpl() {
+	public LogDaoImpl() {
 		AfipCheckerCreateStatement afipCheckerCreateStatement = 
 				new AfipCheckerCreateStatement();
 		executeSqlStatement(afipCheckerCreateStatement);
 	}
 
 	@Override
-	public void save(DummyReturn dummyReturn) {
+	public void save(Log log) {
 		AfipCheckerUpdateStatement afipCheckerUpdateStatement = 
-				new AfipCheckerUpdateStatement(dummyReturn);
+				new AfipCheckerUpdateStatement(log);
 		executeSqlStatement(afipCheckerUpdateStatement);
 	}
 
